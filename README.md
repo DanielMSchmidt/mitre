@@ -6,6 +6,33 @@ It is heavily inspired by the Rails migration system, with a directory of migrat
 
 Mitre extends this concept with orthoganal naming of the migration files (`.curl`, `.sql`, `.pgsql`, etc) which are used to look-up the corresponding runner engine and configuration.
 
+## Filename Anatomy
+
+```
+./config/example.yml
+./anylevelofnesting/example/202030303033_do_some_migration_with_our_data_models.rails
+                                                                                ^^^^^ runner type, if the runner
+                                                                                      needs configuration, this
+                                                                                      must be provided in
+                                                                                      ./config/example.yml
+
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ arbitrary name for
+                                                                                human readability
+
+                            ^^^^^^^^^^^^ Datestamp for ordering across all files, is
+                                         used to determine run-order for all migrations
+
+                    ^^^^^^^ Uses the configuration in config/example.yml which may
+                            contain configuration for multiple runners
+
+  ^^^^^^^^^^^^^^^^^ Arbitrary, may also just be ./ - useful if you compose
+                    your mitre migrations directory from many Git repositories
+                    (see below for example)
+
+```
+
+## Example Directory Structure
+
 For example:
 
 ```
