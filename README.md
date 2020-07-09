@@ -103,3 +103,15 @@ This allows maintaining a Mitre set-up with migrations from a number of projects
 - You could easily do something like .risky.curl to indicate that this migration is risky, and the default mode is maybe not to run risky migrations :shrug: but you could force that
 
 - You could support up/down migrations by making a directory `10101010101_something_reversible/{up/down}.sql`
+
+## The Trouble With Rails Migrations
+
+- At some level of maturity, and table size using the ActiveRecord DSL for changes is risky, you might want to use a tool such as Percona.
+
+- Being unable to boot the app if there are outstanding migrations is a constant source of annoyance. Maybe the un-run migrations don't affect the part of the code you are trying to test.
+
+- Rails' promise of database agnosticity doesn't hold at all, so using the ActiveRecord migration DSL to define your SQL statements in Ruby is a weak abstraction if you want to use triggers, functions or custom types (e.g in PostgreSQL, but also in MySQL in advanced configurations).
+
+- Rails migrations are often used for data migrations, for better or worse, you may or may not want to run them at deploy time, or later at night, similarly with adding indexes to databases which may/not need to be run at deploy time.
+
+- The entire concept of deploy-time is weird with containerized applications and autoscaling.
