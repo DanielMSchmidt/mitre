@@ -88,6 +88,28 @@ The migration directory is allowed to be nested, all files across all directorie
 
 This allows maintaining a Mitre set-up with migrations from a number of projects to create a kind of meta-repository that contains the migrations from a number of projects together.
 
+## Remembering which migrations ran
+
+Mitre tries to remember which migrations have been run, in the case of curl, or http migrations which are fire-and-forget it's impossible for mitre to store the result, and avoid firing that migration again.
+
+To resolve that it is required to specify at least one configuration for a store which is persistent. In case more than one store is available (e.g two MySQL configurations, or one each MySQL and PostgreSQL) mitre will require that one is configured as the store for which migrations have and haven't run.
+
+## Tags
+
+Files can be tagged with arbitrary arbitrary flags in the filename. Any dot separated parts immediately before one of the supported runners will be treated as a flag. `<timestamp>_name.foo.bar.baz.curl`.
+
+To see how mitre identifies tags in any filename run:
+
+    $ mitre extract-tags ./path/to.the.file
+
+By default `data`, `risky` and `long` migrations (or combinations including those tags) are not run.
+
+### Reserved words
+
+Some words cannot be used as a tag, they are used, or are reserved for use for runners. Examples include `curl`, `rails`, `bash`, `sh` and more. For a complete list run:
+
+    $ mitre list-reserved-words
+
 ## Other things to know
 
 - config contains config files that correlate with the directories elasticsearch.yml correlates to 'elasticsearch/'
