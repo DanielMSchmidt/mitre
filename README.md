@@ -4,7 +4,7 @@ Mitre is a cross-platform multi-purpose tool for running data and structural mig
 
 It is heavily inspired by the Rails migration system, with a directory of migrations, the filenames prefixed with a timestamp which should be run once, and only once per environment.
 
-Mitre extends this concept with orthoganal naming of the migration files (`.curl`, `.sql`, `.pgsql`, etc) which are used to look-up the corresponding runner engine and configuration.
+Mitre extends this concept with orthogonal naming of the migration files (`.curl`, `.sql`, `.pgsql`, etc) which are used to look-up the corresponding runner engine and configuration.
 
 ## Filename Anatomy
 
