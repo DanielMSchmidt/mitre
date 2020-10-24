@@ -11,6 +11,7 @@ use std::path::Path;
 mod filename;
 mod migrations;
 mod reserved;
+mod runner;
 
 fn main() {
   pretty_env_logger::init();
@@ -19,6 +20,26 @@ fn main() {
     .version("0.1")
     .author("Lee Hambley <lee.hambley@gmail.com>")
     .about("CLI runner for migrations")
+    .subcommand(
+      App::new("run")
+        .about("runs migrations")
+        .arg(
+          Arg::with_name("config_file")
+            .long("config")
+            .short('c')
+            .takes_value(true)
+            .value_name("CONFIG FILE")
+            .about("The configuration file to use"),
+        )
+        .arg(
+          Arg::with_name("directory")
+            .long("directory")
+            .short('d')
+            .takes_value(true)
+            .value_name("MIGRATION DIR")
+            .about("The directory to use"),
+        ),
+    )
     .subcommand(
       App::new("reserved-words")
         .about("utilties for reserved words")
@@ -75,6 +96,32 @@ fn main() {
         let mut table = Table::new();
         table.add_row(row!["Filename"]);
         migrations.iter().for_each(|migration| {
+          eprintln!("{:?}", migration);
+          table.add_row(Row::new(vec![Cell::new(
+            migration.parsed.path.to_str().unwrap(),
+          )
+          .style_spec("bFy")]));
+        });
+        table.printstd();
+      }
+    }
+    Some("run") => {
+      info!("running migrations");
+      if let Some(ref matches) = m.subcommand_matches("run") {
+        assert!(matches.is_present("directory"));
+        let path = Path::new(matches.value_of("directory").unwrap());
+        let migrations = match migrations::migrations(path) {
+          Ok(m) => m,
+          Err(_) => panic!("something happen"),
+        };
+        let result = match runner::run_migrations(&migrations) {
+          Ok(m) => m,
+          Err(_) => panic!("something happened during execution"),
+        };
+
+        let mut table = Table::new();
+        table.add_row(row!["Filename"]);
+        result.iter().for_each(|migration| {
           eprintln!("{:?}", migration);
           table.add_row(Row::new(vec![Cell::new(
             migration.parsed.path.to_str().unwrap(),
