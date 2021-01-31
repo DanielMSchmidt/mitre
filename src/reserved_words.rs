@@ -1,4 +1,4 @@
 struct ReservedWord {
-word: string,
-reason: string
+    word: string,
+    reason: string,
 }

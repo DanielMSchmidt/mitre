@@ -1,7 +1,7 @@
 enum MigrationKind {
-  curl,
-  rails,
-  ruby,
-  bash,
-  sh
+    curl,
+    rails,
+    ruby,
+    bash,
+    sh,
 }
