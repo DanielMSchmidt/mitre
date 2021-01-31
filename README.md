@@ -137,3 +137,7 @@ Some words cannot be used as a tag, they are used, or are reserved for use for r
 - Rails migrations are often used for data migrations, for better or worse, you may or may not want to run them at deploy time, or later at night, similarly with adding indexes to databases which may/not need to be run at deploy time.
 
 - The entire concept of deploy-time is weird with containerized applications and autoscaling.
+
+## Contributing
+
+Please install [pre-commit](https://pre-commit.com/#install) and run `pre-commit install` in this repo to install the commit checks.
